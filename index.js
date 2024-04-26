@@ -15,11 +15,10 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(passport.initialize());
 
-app.use("/blog", routes.blog);
 app.use("/users", routes.user);
 app.use("/posts", routes.post); 
 
-app.get("/", (req, res) => res.redirect("/blog"));
+app.get("/", (req, res) => res.redirect("/posts"));
 
 // catch 404 
 app.use((req, res, next) => {

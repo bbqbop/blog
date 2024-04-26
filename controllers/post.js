@@ -4,9 +4,18 @@ const Post = require("../models/post");
 const Comment = require("../models/comment");
 
 
+exports.readAll = asyncHandler(async (req, res) => {
+    const posts = await Post.find().populate({
+        path: 'author',
+        select: 'username'
+    })
+    res.json({
+        message: "All posts found.",
+        posts
+    })
+})
 
 exports.create = asyncHandler(async (req, res) => {
-    if (!req.user.isAdmin) res.status(401).json({ error: "Unauthorized: User does not have admin status." })
     const { title, content } = req.body;
     const newPost = new Post({
         title, content, author: req.user._id
@@ -57,3 +66,21 @@ exports.update = asyncHandler(async (req, res) => {
         updatedPost
     });
 });
+
+exports.delete = asyncHandler(async (req, res) => {
+    const post = await Post.findByIdAndDelete(req.params.id)
+    res.json({
+        message: "Post deleted.",
+        post
+    })
+})
+
+
+
+
+
+
+
+
+
+

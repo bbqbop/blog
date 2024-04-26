@@ -1,16 +1,20 @@
 const { Router } = require("express");
 const router = Router();
 
-const passport = require("passport")
-
 const postController = require("../controllers/post")
 const commentController = require("../controllers/comment");
 
-router.post("/", passport.authenticate('jwt'), postController.create);
+const { authJwt, authAdmin } = require("../lib/authentication")
+
+router.get("/", postController.readAll)
+
+router.post("/", authJwt, authAdmin, postController.create);
 router.get("/:id", postController.read);
-router.put("/:id/update", passport.authenticate('jwt'), postController.update)
+router.put("/:id", authJwt, authAdmin, postController.update)
+router.delete("/:id", authJwt, authAdmin, postController.delete)
 
 
-router.post("/:id/comments/", passport.authenticate('jwt', { session: false }), commentController.create)
+router.post("/:id/comments/", authJwt, commentController.create);
+router.delete("/:postId/comments/:commentId", authJwt, commentController.delete)
 
 module.exports = router;
