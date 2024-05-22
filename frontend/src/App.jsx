@@ -6,7 +6,6 @@ import { useAuth } from "./contexts/authContext";
 export default function App(){
   const { isLoggedIn } = useAuth();
   const user = JSON.parse(localStorage.getItem('user'))
-  console.log(user)
 
   return(
     <div className="app">
