@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
@@ -7,14 +7,29 @@ export default function SignUp(){
     const [password, setPassword] = useState('');
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
+    const [localError, setLocalError] = useState('');
 
-    const { signUp, loading, error } = useAuth();
+    const { signUp, loading, error, clearError } = useAuth();
+    const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
-        const navigate = useNavigate()
+
+    useEffect(()=> {
+        clearError();
+    },[])
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = signUp(username, password, firstname, lastname)
-        if (success) navigate('/')
+        if(!username.trim()){
+            setLocalError('Enter username')
+            return
+        } 
+        if(!password.trim()){
+            setLocalError('Enter password')
+            return
+        }
+        setLocalError('');
+        const success = await signUp(username, password, firstname, lastname)
+        if (success) navigate("/")
     }
 
     return(
@@ -27,7 +42,8 @@ export default function SignUp(){
                     id="username"
                     placeholder="Username"
                     value={username} 
-                    onChange={e => setUsername(e.target.value)}   
+                    onChange={e => setUsername(e.target.value)}
+                    required   
                 />
                 <input 
                     type="password"
@@ -35,7 +51,8 @@ export default function SignUp(){
                     id="password"
                     placeholder="Password"
                     value={password} 
-                    onChange={e => setPassword(e.target.value)}   
+                    onChange={e => setPassword(e.target.value)} 
+                    required  
                 />
                 <input 
                     type="text"
@@ -57,6 +74,7 @@ export default function SignUp(){
             </form>
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
+            {localError && <p>{localError}</p>}
         </>
     )
 }

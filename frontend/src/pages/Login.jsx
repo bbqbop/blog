@@ -5,11 +5,21 @@ import { useAuth } from '../contexts/authContext';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading, error } = useAuth();
+  const [localError, setLocalError] = useState('');
+  let { login, loading, error } = useAuth();
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(!username.trim()){
+      setLocalError('Enter username.')
+      return
+    }
+    if(!password.trim()){
+      setLocalError('Enter password.')
+      return
+    }
+    setLocalError('');
     const success = await login(username, password);
     if (success) return navigate('/')
   };
@@ -36,7 +46,8 @@ export default function Login() {
         />
         <button type="submit" disabled={loading}>Submit</button>
         {loading && <p>Loading...</p>}
-        {error && <p>{error.message}</p>}
+        {error && <p>{error}</p>}
+        {localError && <p>{localError}</p>}
       </form>
       <hr />
       <p>Not registered yet?</p>

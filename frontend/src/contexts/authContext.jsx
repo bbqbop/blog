@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       return true;
 
     } catch (error) {
-      setError(error);
+      setError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -88,8 +88,12 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const clearError = () => {
+    setError(null);
+  }
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, error, login, logout, signUp }}>
+    <AuthContext.Provider value={{ isLoggedIn, loading, error, login, logout, signUp, clearError }}>
       {children}
     </AuthContext.Provider>
   );
