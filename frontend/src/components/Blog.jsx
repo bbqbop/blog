@@ -1,9 +1,18 @@
 import useFetchData from "../hooks/useFetchData"
-import { Link } from "react-router-dom";
 import PostPreview from "./PostPreview";
+import { useEffect, useState } from "react";
 
 export default function Blog() {
-    const { data, error, loading } = useFetchData('/')
+    const { data, error, loading } = useFetchData('/');
+    const [posts, setPosts] = useState([]);
+
+    useEffect(()=>{
+        if(!!data) setPosts(data.posts)
+    },[data])
+
+    const handleDelete = (postId) => {
+        setPosts(posts.filter(post => post._id !== postId))
+    }
 
     if(loading){
         return <p>...loading</p>
@@ -14,15 +23,17 @@ export default function Blog() {
     else{
         return (
             <div className="blog">
-                {data.posts.map((post, idx) => (
-                    <Link to={`/posts/${post._id}`} key={idx}>
+                { posts.length < 1 ? (
+                    <p>No Posts!</p>
+                ) : (posts.map((post, idx) => (
                         <PostPreview 
                             title={post.title} 
                             author={post.author.username} 
-                            key={idx} id={post._id}
+                            key={idx} 
+                            id={post._id}
+                            onDelete={handleDelete}
                         />
-                    </Link> 
-                ))}
+                )))}
             </div>
         )}
 }

@@ -8,6 +8,7 @@ import Blog from './components/Blog';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import CreatePost from './pages/CreatePost';
 import { AuthProvider } from './contexts/authContext';
 
 const router = createBrowserRouter([
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
       { index: true, element: <Blog />},
       { path: "/posts/:id", element: <Post />},
       { path: "/login", element: <Login />},
-      { path: "/sign-up", element: <SignUp />}
+      { path: "/sign-up", element: <SignUp />},
+      { path: "/create-post", element: <CreatePost />}
     ],
     errorElement: <ErrorPage />,
   },

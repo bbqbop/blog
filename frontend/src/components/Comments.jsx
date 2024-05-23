@@ -35,17 +35,20 @@ export default function Comments({ initialComments, postId }) {
             {comments.length < 1 ? (
                 <p>No Comments!</p>
             ) : (
-                comments.map((comment, idx) => (
-                    <Comment
-                        author={comment.author}
-                        date={moment(comment.date).format("MM/DD/YY, HH:MM")}
-                        message={comment.message}
-                        key={comment._id}
-                        id={comment._id}
-                        postId={postId}
-                        onDelete={handleDelete}
-                    />
-                ))
+                <>
+                    <h3>Comments</h3>
+                    {comments.map((comment, idx) => (
+                        <Comment
+                            author={comment.author}
+                            date={moment(comment.date).format("MM/DD/YY, HH:MM")}
+                            message={comment.message}
+                            key={comment._id}
+                            id={comment._id}
+                            postId={postId}
+                            onDelete={handleDelete}
+                        />
+                    ))}
+                </>
             )}
             {isLoggedIn ? (
                 <form onSubmit={handleSubmit}>
@@ -65,6 +68,7 @@ export default function Comments({ initialComments, postId }) {
             ) : (
                 <p>Log in to leave a comment!</p>
             )}
+            
         </div>
     );
 }

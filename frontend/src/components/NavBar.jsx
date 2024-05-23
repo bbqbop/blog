@@ -1,22 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
 
 export default function NavBar(){
-    const { isLoggedIn, logout } = useAuth()
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-    }
+    const location = useLocation();
+    const { isLoggedIn } = useAuth();
+    const user = JSON.parse(localStorage.getItem('user'))  
 
     return (
         <div className="navbar">
-            <Link to="/">Home</Link>
-            {isLoggedIn 
-            ? <button onClick={handleLogout}>Logout</button>
-            : <Link to="/login">Login</Link>
-            }
+            {isLoggedIn && <p>{`Hi ${user.firstname}`}</p>}
+            {location.pathname != "/" && <Link to="/">Home</Link>}
         </div> 
     )
 }

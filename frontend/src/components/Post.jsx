@@ -23,6 +23,7 @@ export default function Post(){
                 <p className="date">{moment(date).format("MMM Do, YYYY")}</p>
                 <hr />
                 <p>{content}</p>
+                <hr />
                 <Comments initialComments={data.comments} postId={id}/>
                 </>
             </div>        
