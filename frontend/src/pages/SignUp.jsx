@@ -60,7 +60,8 @@ export default function SignUp(){
                     id="firstname"
                     placeholder="First Name"
                     value={firstname} 
-                    onChange={e => setFirstname(e.target.value)}   
+                    onChange={e => setFirstname(e.target.value)} 
+                    required  
                 />
                 <input 
                     type="text"
@@ -68,7 +69,8 @@ export default function SignUp(){
                     id="lastname"
                     placeholder="Last Name"
                     value={lastname} 
-                    onChange={e => setLastname(e.target.value)}   
+                    onChange={e => setLastname(e.target.value)}  
+                    required 
                 />
                 <button type="submit">Submit</button>
             </form>

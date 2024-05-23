@@ -38,11 +38,12 @@ export default function useSendData() {
                 body: JSON.stringify(data)
             });
 
-            const result = await response.json();
             if (!response.ok) {
                 throw new Error(result.message || 'Something went wrong');
             }
-            return true;
+            const result = await response.json();
+
+            return result;
         } catch (error) {
             setError(error.message);
             return false

@@ -1,14 +1,13 @@
 import moment from "moment";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/authContext";
 import useSendData from "../hooks/useSendData";
 import Comment from "./Comment";
 
-export default function Comments({ comments, postId }) {
+export default function Comments({ initialComments, postId }) {
     const { isLoggedIn } = useAuth();
+    const [comments, setComments] = useState(initialComments)
     const [newComment, setNewComment] = useState("");
-    const navigate = useNavigate()
 
     const { loading, error, sendData } = useSendData();
 
@@ -17,11 +16,19 @@ export default function Comments({ comments, postId }) {
         if (newComment.trim()) {
             const success = await sendData(`/posts/${postId}/comments/`, { message: newComment });
             if (success) {
+                const user = JSON.parse(localStorage.getItem('user'))
+                const addedComment = success.newComment;
+                addedComment.author = {username: user.username, _id: user.id}
+                setComments([...comments, addedComment])
                 setNewComment("");
-                navigate(0);
             }
         }
     };
+
+    const handleDelete = (commentId) => {
+        setComments(comments.filter(comment => comment._id !== commentId));
+    }
+
 
     return (
         <div className="comments">
@@ -30,29 +37,29 @@ export default function Comments({ comments, postId }) {
             ) : (
                 comments.map((comment, idx) => (
                     <Comment
-                        author={comment.author.username}
-                        date={moment(comment.date).format("MMM Do, YYYY")}
+                        author={comment.author}
+                        date={moment(comment.date).format("MM/DD/YY, HH:MM")}
                         message={comment.message}
                         key={comment._id}
                         id={comment._id}
+                        postId={postId}
+                        onDelete={handleDelete}
                     />
                 ))
             )}
             {isLoggedIn ? (
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        New comment
-                        <textarea
-                            type="text"
-                            name="comment"
-                            id="comment"
-                            value={newComment}
-                            onChange={e => setNewComment(e.target.value)}
-                        />
-                    </label>
-                    <button type="submit" disabled={loading}>
-                        Submit
-                    </button>
+                    <label htmlFor="comment">New comment</label>
+                    <textarea
+                        type="text"
+                        name="comment"
+                        id="comment"
+                        value={newComment}
+                        onChange={e => setNewComment(e.target.value)}
+                        onKeyDown={e => e.key == "Enter" && handleSubmit(e)}
+                    />
+                    
+                    <button type="submit" disabled={loading}>Submit</button>
                     {error && <p>Error submitting comment: {error.message}</p>}
                 </form>
             ) : (

@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
       if(data.error){
         throw new Error(data.error)
       }
-
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user))
       setIsLoggedIn(true);
@@ -78,6 +77,7 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
+        setIsLoggedIn(true);
         return true
 
     } catch(error) {
