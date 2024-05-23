@@ -5,7 +5,7 @@ import useSendData from "../hooks/useSendData";
 import Comment from "./Comment";
 
 export default function Comments({ initialComments, postId }) {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     const [comments, setComments] = useState(initialComments)
     const [newComment, setNewComment] = useState("");
 
@@ -16,7 +16,6 @@ export default function Comments({ initialComments, postId }) {
         if (newComment.trim()) {
             const success = await sendData(`/posts/${postId}/comments/`, { message: newComment });
             if (success) {
-                const user = JSON.parse(localStorage.getItem('user'))
                 const addedComment = success.newComment;
                 addedComment.author = {username: user.username, _id: user.id}
                 setComments([...comments, addedComment])
@@ -63,7 +62,7 @@ export default function Comments({ initialComments, postId }) {
                     />
                     
                     <button type="submit" disabled={loading}>Submit</button>
-                    {error && <p>Error submitting comment: {error.message}</p>}
+                    {error && <p>Error submitting comment.</p>}
                 </form>
             ) : (
                 <p>Log in to leave a comment!</p>

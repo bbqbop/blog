@@ -3,9 +3,8 @@ import { useAuth } from "../contexts/authContext"
 import useDeleteData from "../hooks/useDeleteData";
 
 export default function PostPreview({ title, author, id, onDelete }){
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     const { deleteData } = useDeleteData();
-    const user = JSON.parse(localStorage.getItem('user'))
 
     const handleClick = () => {
         const success = deleteData(`/posts/${id}`)

@@ -3,12 +3,12 @@ import { useAuth } from "../contexts/authContext";
 
 export default function NavBar(){
     const location = useLocation();
-    const { isLoggedIn } = useAuth();
-    const user = JSON.parse(localStorage.getItem('user'))  
+    const { isLoggedIn, user, error } = useAuth();
 
     return (
         <div className="navbar">
             {isLoggedIn && <p>{`Hi ${user.firstname}`}</p>}
+            {error && <p>{error}</p>}
             {location.pathname != "/" && <Link to="/">Home</Link>}
         </div> 
     )

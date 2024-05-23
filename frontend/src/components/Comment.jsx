@@ -3,8 +3,7 @@ import useDeleteData from "../hooks/useDeleteData";
 
 export default function Comment({author, date, message, id, postId, onDelete}){
     const { deleteData } = useDeleteData();
-    const { isLoggedIn } = useAuth();
-    const user = JSON.parse(localStorage.getItem('user'));
+    const { isLoggedIn, user } = useAuth();
 
     const handleClick = async () => {
         const success = await deleteData(`/posts/${postId}/comments/${id}`);

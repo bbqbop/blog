@@ -8,7 +8,7 @@ import Blog from './components/Blog';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import CreatePost from './pages/CreatePost';
+import PostForm from './pages/PostForm';
 import { AuthProvider } from './contexts/authContext';
 
 const router = createBrowserRouter([
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "/posts/:id", element: <Post />},
       { path: "/login", element: <Login />},
       { path: "/sign-up", element: <SignUp />},
-      { path: "/create-post", element: <CreatePost />}
+      { path: "/create-post", element: <PostForm />}
     ],
     errorElement: <ErrorPage />,
   },

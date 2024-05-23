@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import useSendData from "../hooks/useSendData";
 
-export default function CreatePost(){
+export default function PostForm(){
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const { sendData } = useSendData();

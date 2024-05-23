@@ -1,6 +1,6 @@
 // AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
-import { redirect } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
@@ -8,15 +8,41 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const port = import.meta.env.VITE_PORT;
 
-  useEffect(() => {
+  const checkTokenValidity = () => {
     const token = localStorage.getItem('token')
-    if (token) {
-      setIsLoggedIn(true);
+    const isTokenExpired = (token) => {
+      if (!token) return true;
+      try {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        const isExpired = decodedToken.exp < currentTime;
+        if (isExpired){
+          setError('Authentication token is expired, log in again.');
+          return true
+        } else false
+      } catch (error) {
+        setError('Error decoding token, log in again.');
+        return true;
+      }
     }
-  }, []);
+    if (token && !isTokenExpired(token)){
+      setIsLoggedIn(true);
+      setUser(JSON.parse(localStorage.getItem('user')))
+    } else {
+      setIsLoggedIn(false);
+      setUser(null)
+      localStorage.clear()
+    } 
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(checkTokenValidity, 10000)
+    return () => clearInterval(intervalId);
+  },[])
 
   const login = async (username, password) => {
     setLoading(true);
@@ -40,6 +66,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user))
       setIsLoggedIn(true);
+      setUser(data.user);
       return true;
 
     } catch (error) {
@@ -53,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    setUser(null);
   };
 
   const signUp = async (username, password, firstname, lastname) => {
@@ -78,6 +106,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         setIsLoggedIn(true);
+        setUser(data.user)
         return true
 
     } catch(error) {
@@ -93,7 +122,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, loading, error, login, logout, signUp, clearError }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, loading, error, login, logout, signUp, clearError }}>
       {children}
     </AuthContext.Provider>
   );

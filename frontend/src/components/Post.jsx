@@ -3,10 +3,14 @@ import moment from "moment";
 import useFetchData from "../hooks/useFetchData";
 import { useParams } from "react-router-dom";
 import Comments from "./Comments";
+import { useAuth } from "../contexts/authContext";
  
 export default function Post(){
     const { id } = useParams()
     const { data, loading, error } = useFetchData(`/posts/${id}`)
+
+    const { isLoggedIn, user } = useAuth();
+
     if(loading) return <p>...loading</p>
     if(error) return <p>${error}</p>
     if (!data) {
@@ -23,6 +27,7 @@ export default function Post(){
                 <p className="date">{moment(date).format("MMM Do, YYYY")}</p>
                 <hr />
                 <p>{content}</p>
+                {isLoggedIn && user.isAdmin && <button>Edit Post</button>}
                 <hr />
                 <Comments initialComments={data.comments} postId={id}/>
                 </>
