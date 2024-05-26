@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    checkTokenValidity()
     const intervalId = setInterval(checkTokenValidity, 10000)
     return () => clearInterval(intervalId);
   },[])

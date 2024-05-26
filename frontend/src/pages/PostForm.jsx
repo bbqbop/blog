@@ -12,8 +12,6 @@ export default function PostForm(){
     const url = `/posts/${useParams().id || ''}`;
    
     useEffect(()=>{
-        console.log(url)
-
         if (location.pathname !== '/create-post'){
             setTitle(location.state.title)
             setContent(location.state.content)

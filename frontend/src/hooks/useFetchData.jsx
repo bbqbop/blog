@@ -18,7 +18,7 @@ export default function useFetchData(url = ''){
         .then(data => setData(data))
         .catch(err => setError(err))
         .finally(() => setLoading(false));
-    }, [])
+    }, [url])
 
     return { data, error, loading };
 }

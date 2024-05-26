@@ -29,7 +29,7 @@ export default function useDeleteData(){
                 },
             })
             const result = await response.json()      
-            return true      
+            return result      
         }
         catch(err){
             setError(error.message)

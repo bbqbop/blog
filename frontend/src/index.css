@@ -7,7 +7,57 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* global.css */
+a, button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  font-size: 16px;
+  color: white;
+  background-color: lightcoral;
+  border: 2px solid lightcoral;
+  border-radius: 4px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover, button:hover {
+  background-color: #e57373; /* A darker shade of light coral */
+  border-color: #e57373;
+  color: #fff;
+}
+
+a:active, button:active {
+  background-color: #d32f2f; /* An even darker shade */
+  border-color: #d32f2f;
+}
+
+a:focus, button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(240, 128, 128, 0.5); /* rgba value of light coral with 50% opacity */
+}
+
+input, textarea {
+  display: block;
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+  border-color: lightcoral;
+}
+
+form { 
+  display: grid;
+  justify-content: center;
+}
+
+.delete { 
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+div { 
+  position: relative;
 }

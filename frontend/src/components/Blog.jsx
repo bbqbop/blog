@@ -1,6 +1,7 @@
 import useFetchData from "../hooks/useFetchData"
 import PostPreview from "./PostPreview";
 import { useEffect, useState } from "react";
+import styles from "./Blog.module.css"
 
 export default function Blog() {
     const { data, error, loading } = useFetchData('/');
@@ -18,11 +19,11 @@ export default function Blog() {
         return <p>...loading</p>
     } 
     if(error) {
-        return <p>{error}</p>
+        return <p>{error.message}</p>
     }
     else{
         return (
-            <div className="blog">
+            <div className={styles.blog}>
                 { posts.length < 1 ? (
                     <p>No Posts!</p>
                 ) : (posts.map((post, idx) => (

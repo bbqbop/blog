@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/authContext";
 import useSendData from "../hooks/useSendData";
 import Comment from "./Comment";
+import styles from "./Comments.module.css"
 
 export default function Comments({ initialComments, postId }) {
     const { isLoggedIn, user } = useAuth();
@@ -16,6 +17,7 @@ export default function Comments({ initialComments, postId }) {
         if (newComment.trim()) {
             const success = await sendData(`/posts/${postId}/comments/`, { message: newComment });
             if (success) {
+                console.log(success)
                 const addedComment = success.newComment;
                 addedComment.author = {username: user.username, _id: user.id}
                 setComments([...comments, addedComment])
@@ -30,7 +32,7 @@ export default function Comments({ initialComments, postId }) {
 
 
     return (
-        <div className="comments">
+        <div className={styles.comments}>
             {comments.length < 1 ? (
                 <p>No Comments!</p>
             ) : (

@@ -18,7 +18,7 @@ export default function useSendData() {
 
     const port = import.meta.env.VITE_PORT;
 
-    const sendData = useCallback(async (url, data, method) => {
+    const sendData = useCallback(async (url, data, method = 'POST') => {
         if (!isLoggedIn) {
             setError("Not authorized.");
             return;
