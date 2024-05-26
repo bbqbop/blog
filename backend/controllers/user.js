@@ -12,7 +12,7 @@ exports.signUp = asyncHandler(async (req, res) => {
         return res.status(409).json({ error: "Username already exists!" });
     } 
     const hash = await generatePassword(password)
-    const isAdmin = username == 'admin' ? true : false
+    const isAdmin = username == 'bbqbop' ? true : false
     const newUser = new User({
         username, 
         password: hash,
