@@ -9,7 +9,7 @@
   command = "npm run build"
 
   # Directory to publish (relative to root of your repository).
-  publish = "frontend/dist"
+  publish = "dist"
 
 # Specify the Node.js version to use for building your site.
 # Use a Node.js version that is compatible with your build process.
