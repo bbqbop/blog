@@ -20,7 +20,8 @@ const router = createBrowserRouter([
       { path: "/posts/:id", element: <Post />},
       { path: "/login", element: <Login />},
       { path: "/sign-up", element: <SignUp />},
-      { path: "/create-post", element: <PostForm />}
+      { path: "/create-post", element: <PostForm />},
+      { path: "/posts/:id/edit", element: <PostForm />}
     ],
     errorElement: <ErrorPage />,
   },

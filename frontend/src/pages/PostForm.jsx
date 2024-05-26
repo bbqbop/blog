@@ -1,21 +1,40 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSendData from "../hooks/useSendData";
 
 export default function PostForm(){
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [method, setMethod] = useState('POST');
     const { sendData } = useSendData();
     const navigate = useNavigate()
+    const location = useLocation();
+    const url = `/posts/${useParams().id || ''}`;
+   
+    useEffect(()=>{
+        console.log(url)
 
+        if (location.pathname !== '/create-post'){
+            setTitle(location.state.title)
+            setContent(location.state.content)
+            setMethod('PUT');
+        } else {
+            setTitle('');
+            setContent('');
+            setMethod('POST');
+        }
+    },[])
 
     const handleSubmit = async(e) => {
         e.preventDefault();
-        const success = await sendData('/posts', {title, content})
+        const success = await sendData(url, {title, content, }, method)
         if (success){
-            navigate(`/posts/${success.newPost._id}`)
+            navigate(`/posts/${success.post._id}`)
+            console.log(success)
         }
     }
+
+
 
  return (
     <>

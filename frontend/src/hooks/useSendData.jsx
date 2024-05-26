@@ -18,7 +18,7 @@ export default function useSendData() {
 
     const port = import.meta.env.VITE_PORT;
 
-    const sendData = useCallback(async (url, data) => {
+    const sendData = useCallback(async (url, data, method) => {
         if (!isLoggedIn) {
             setError("Not authorized.");
             return;
@@ -29,7 +29,7 @@ export default function useSendData() {
 
         try {
             const response = await fetch(`${port}${url}`, {
-                method: "POST",
+                method: method,
                 mode: "cors",
                 headers: {
                     "Content-Type": "application/json",

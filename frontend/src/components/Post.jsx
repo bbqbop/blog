@@ -1,18 +1,23 @@
 import moment from "moment";
 
 import useFetchData from "../hooks/useFetchData";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Comments from "./Comments";
 import { useAuth } from "../contexts/authContext";
  
 export default function Post(){
     const { id } = useParams()
     const { data, loading, error } = useFetchData(`/posts/${id}`)
-
     const { isLoggedIn, user } = useAuth();
+    const navigate = useNavigate()
+
+    const handleEdit = () => {
+        navigate(`/posts/${id}/edit`, { state: data.post })
+    }
 
     if(loading) return <p>...loading</p>
     if(error) return <p>${error}</p>
+
     if (!data) {
         return <p>No data available</p>;
     } else {
@@ -27,7 +32,7 @@ export default function Post(){
                 <p className="date">{moment(date).format("MMM Do, YYYY")}</p>
                 <hr />
                 <p>{content}</p>
-                {isLoggedIn && user.isAdmin && <button>Edit Post</button>}
+                {isLoggedIn && user.isAdmin && <button onClick={handleEdit}>Edit Post</button>}
                 <hr />
                 <Comments initialComments={data.comments} postId={id}/>
                 </>
