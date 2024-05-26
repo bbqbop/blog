@@ -11,7 +11,7 @@ exports.create = asyncHandler(async (req, res) => {
     await newComment.save();
     res.json({ 
         message: "Comment created",
-        newComment
+        newComment, 
     });
 } )
 

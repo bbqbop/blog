@@ -47,7 +47,9 @@ exports.login = asyncHandler(async (req, res) => {
         user: {
             firstname: user.firstname,
             lastname: user.lastname,
-            username: user.username 
+            username: user.username,
+            id: user._id, 
+            isAdmin: user.isAdmin
         }
     },)
 })

@@ -17,13 +17,13 @@ exports.readAll = asyncHandler(async (req, res) => {
 
 exports.create = asyncHandler(async (req, res) => {
     const { title, content } = req.body;
-    const newPost = new Post({
+    const post = new Post({
         title, content, author: req.user._id
     })
-    await newPost.save();
+    await post.save();
     res.json({ 
         message: "Post created.", 
-        newPost,
+        post,
     })
 })
 
@@ -54,16 +54,16 @@ exports.read = async (req, res) => {
 }
 
 exports.update = asyncHandler(async (req, res) => {
-    const updatedPost = new Post({
+    const post = new Post({
         title: req.body.title,
         content: req.body.content,
         author: req.user._id,
         _id: req.params.id       
     })
-    await Post.findByIdAndUpdate(req.params.id, updatedPost);
+    await Post.findByIdAndUpdate(req.params.id, post);
     res.json({
         message: "Post updated.",
-        updatedPost
+        post
     });
 });
 
